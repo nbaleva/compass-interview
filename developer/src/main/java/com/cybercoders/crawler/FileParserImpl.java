@@ -46,6 +46,7 @@ public class FileParserImpl implements FileParser {
         }
         catch (IOException ioe) {
             LOG.error(ioe.getMessage());
+            retval = null;
         }
         return retval;
     }

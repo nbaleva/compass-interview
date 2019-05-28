@@ -1,6 +1,5 @@
 package com.cybercoders.crawler;
 
-import com.cybercoders.crawler.exception.NotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -25,68 +24,57 @@ public class FileParserTest extends CrawlerApplicationTests {
     @Test
     public void testParseLinks() {
 
-        try {
-            List<String> links;
-            String file = fileFetcher.fetchFile(DATA_FILE);
-            Assert.assertNotNull(file);
-            Assert.assertTrue(file.length() > 0);
-            links = fileParser.parseLinks(file);
-            Assert.assertNotNull(links);
-            Assert.assertEquals(links.size(), 62);
+        List<String> links;
+        String file = fileFetcher.fetchFile(DATA_FILE).getFile();
+        Assert.assertNotNull(file);
+        Assert.assertTrue(file.length() > 0);
+        links = fileParser.parseLinks(file);
+        Assert.assertNotNull(links);
+        Assert.assertEquals(links.size(), 62);
 
-            for (String link : links) {
-                LOG.info(link);
-            }
-
-            // null file
-            links = fileParser.parseLinks(null);
-            Assert.assertNotNull(links);
-            Assert.assertEquals(links.size(), 0);
-
-            // empty file
-            links = fileParser.parseLinks("");
-            Assert.assertNotNull(links);
-            Assert.assertEquals(links.size(), 0);
-
-            // empty json file
-            links = fileParser.parseLinks("{}");
-            Assert.assertNotNull(links);
-            Assert.assertEquals(links.size(), 0);
-
-            // json file with empty links
-            links = fileParser.parseLinks("{\"links\":[]}");
-            Assert.assertNotNull(links);
-            Assert.assertEquals(links.size(), 0);
-
-            // bad json property
-            links = fileParser.parseLinks("{\"bad_linkss\":[]}");
-            Assert.assertNotNull(links);
-            Assert.assertEquals(links.size(), 0);
+        for (String link : links) {
+            LOG.info(link);
         }
-        catch (NotFoundException nfe) {
-            Assert.fail();
-        }
+
+        // null file
+        links = fileParser.parseLinks(null);
+        Assert.assertNotNull(links);
+        Assert.assertEquals(links.size(), 0);
+
+        // empty file
+        links = fileParser.parseLinks("");
+        Assert.assertNotNull(links);
+        Assert.assertEquals(links.size(), 0);
+
+        // empty json file
+        links = fileParser.parseLinks("{}");
+        Assert.assertNotNull(links);
+        Assert.assertEquals(links.size(), 0);
+
+        // json file with empty links
+        links = fileParser.parseLinks("{\"links\":[]}");
+        Assert.assertNotNull(links);
+        Assert.assertEquals(links.size(), 0);
+
+        // bad json property
+        links = fileParser.parseLinks("{\"bad_linkss\":[]}");
+        Assert.assertNull(links);
     }
 
     @Test
     public void testParseHtml() {
 
-        try {
-            List<String> links;
-            String file = fileFetcher.fetchFile(HTTP_FILE);
-            Assert.assertNotNull(file);
-            Assert.assertTrue(file.length() > 0);
-            links = fileParser.parseHtml(file);
+        List<String> links;
+        String file = fileFetcher.fetchFile(HTTP_FILE).getFile();
+        Assert.assertNotNull(file);
+        Assert.assertTrue(file.length() > 0);
+        links = fileParser.parseHtml(file);
 
-            Assert.assertNotNull(links);
-            Assert.assertEquals(links.size(), 9);
+        Assert.assertNotNull(links);
+        Assert.assertEquals(links.size(), 9);
 
-            for (String link : links) {
-                LOG.info(link);
-            }
-        }
-        catch (NotFoundException nfe) {
-            Assert.fail();
+        for (String link : links) {
+            LOG.info(link);
         }
     }
 

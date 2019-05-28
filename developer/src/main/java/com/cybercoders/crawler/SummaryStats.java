@@ -6,14 +6,26 @@ public class SummaryStats {
     private int successfulRequests;
     private int failedRequests;
 
-    public void incrementSuccessfulRequests() {
+    void incrementSuccessfulRequests() {
         this.totalRequests++;
         this.successfulRequests++;
     }
 
-    public void incrementFailedRequests() {
+    void incrementFailedRequests() {
         this.totalRequests++;
         this.failedRequests++;
+    }
+
+    int getTotalRequests() {
+        return totalRequests;
+    }
+
+    int getSuccessfulRequests() {
+        return successfulRequests;
+    }
+
+    int getFailedRequests() {
+        return failedRequests;
     }
 
     @Override

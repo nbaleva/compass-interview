@@ -2,6 +2,7 @@ package com.cybercoders.crawler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,18 +13,24 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 public class CrawlerApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CrawlerApplication.class, args);
-	}
+    private Crawler crawler;
 
-	@Override
-	public void run(String... args) throws Exception {
-	    LOG.info("start");
-		LOG.info("end");
-	}
+    @Autowired
+    public CrawlerApplication(Crawler crawler) {
+        this.crawler = crawler;
+    }
 
-	private static Logger LOG = LoggerFactory .getLogger(CrawlerApplication.class);
+    public static void main(String[] args) {
+        SpringApplication.run(CrawlerApplication.class, args);
+    }
 
-	static final String LINKS_URL = "https://raw.githubusercontent.com/OnAssignment/compass-interview/master/developer/data.json";
+    @Override
+    public void run(String... args) {
+        SummaryStats stats = crawler.crawl(LINKS_URL);
+        LOG.info(stats.toString());
+    }
+
+    static final String LINKS_URL = "https://raw.githubusercontent.com/OnAssignment/compass-interview/master/developer/data.json";
+    private static final Logger LOG = LoggerFactory.getLogger(CrawlerApplication.class);
 
 }
